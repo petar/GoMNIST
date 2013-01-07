@@ -1,4 +1,4 @@
-package mnist
+package GoMNIST
 
 import (
 	"compress/gzip"
@@ -14,37 +14,57 @@ const (
 
 type Image []byte
 
+// ReadImageFile opens the named image file (training or test), parses it and
+// returns all images in order.
 func ReadImageFile(name string) (rows, cols int, imgs []Image, err error) {
-	?
+	f, err := os.Open(name)
+	if err != nil {
+		return 0, 0, nil, err
+	}
+	defer f.Close()
+	z, err := gzip.NewReader(f)
+	if err != nil {
+		return 0, 0, nil, err
+	}
+	return readImageFile(z)
 }
 
 func readImageFile(r io.Reader) (rows, cols int, imgs []Image, err error) {
 	var (
 		magic int32
 		n     int32
-		nrows int32
-		ncols int32
+		nrow  int32
+		ncol  int32
 	)
 	if err = binary.Read(r, binary.BigEndian, &magic); err != nil {
-		return nil, err
+		return 0, 0, nil, err
 	}
 	if magic != imageMagic {
-		return nil, os.ErrInvalid
+		return 0, 0, nil, os.ErrInvalid
 	}
 	if err = binary.Read(r, binary.BigEndian, &n); err != nil {
-		return nil, err
+		return 0, 0, nil, err
 	}
-	if err = binary.Read(r, binary.BigEndian, &nrows); err != nil {
-		return nil, err
+	if err = binary.Read(r, binary.BigEndian, &nrow); err != nil {
+		return 0, 0, nil, err
 	}
-	if err = binary.Read(r, binary.BigEndian, &ncols); err != nil {
-		return nil, err
+	if err = binary.Read(r, binary.BigEndian, &ncol); err != nil {
+		return 0, 0, nil, err
 	}
-	imgs = make()
-	for i := int32(0); i < n; i++ {
-		…
+	imgs = make([]Image, n)
+	m := int(nrow * ncol)
+	for i := 0; i < int(n); i++ {
+		imgs[i] = make(Image, m)
+		m_, err := r.Read(imgs[i])
+		if err != nil {
+			return 0, 0, nil, err
+		}
+		if m_ != int(m) {
+			println(m_, m)
+			return 0, 0, nil, os.ErrInvalid
+		}
 	}
-	return imgs, nil
+	return int(nrow), int(ncol), imgs, nil
 }
 
 type Label uint8
@@ -80,12 +100,12 @@ func readLabelFile(r io.Reader) (labels []Label, err error) {
 	}
 	println("Reading", n, "records")
 	labels = make([]Label, n)
-	for i := int32(0); i < n; i++ {
+	for i := 0; i < int(n); i++ {
 		var l Label
 		if err := binary.Read(r, binary.BigEndian, &l); err != nil {
 			return nil, err
 		}
-		labels[int(i)] = l
+		labels[i] = l
 	}
 	return labels, nil
 }
