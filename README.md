@@ -7,4 +7,4 @@ Import this packages as
 
 `import "github.com/petar/GoMNIST"`
 
-The MNIST dataset is included. It is a copy from (Yann LeCun's MNIST page)[http://yann.lecun.com/exdb/mnist/].
+The MNIST dataset is included. It is a copy from [Yann LeCun's MNIST page](http://yann.lecun.com/exdb/mnist/).
