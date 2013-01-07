@@ -1,6 +1,7 @@
 package GoMNIST
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -23,5 +24,5 @@ func TestReadImageFile(t *testing.T) {
 	if len(imgs) != 10000 {
 		t.Errorf("unexpected count %d", len(imgs))
 	}
-	println(nrow, "x",ncol)
+	fmt.Printf("%d images, %dx%d format\n", len(imgs), nrow, ncol)
 }

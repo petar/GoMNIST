@@ -55,12 +55,11 @@ func readImageFile(r io.Reader) (rows, cols int, imgs []Image, err error) {
 	m := int(nrow * ncol)
 	for i := 0; i < int(n); i++ {
 		imgs[i] = make(Image, m)
-		m_, err := r.Read(imgs[i])
+		m_, err := io.ReadFull(r, imgs[i])
 		if err != nil {
 			return 0, 0, nil, err
 		}
 		if m_ != int(m) {
-			println(m_, m)
 			return 0, 0, nil, os.ErrInvalid
 		}
 	}
@@ -98,7 +97,6 @@ func readLabelFile(r io.Reader) (labels []Label, err error) {
 	if err = binary.Read(r, binary.BigEndian, &n); err != nil {
 		return nil, err
 	}
-	println("Reading", n, "records")
 	labels = make([]Label, n)
 	for i := 0; i < int(n); i++ {
 		var l Label
