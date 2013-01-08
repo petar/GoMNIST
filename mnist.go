@@ -12,6 +12,8 @@ const (
 	labelMagic = 0x00000801
 )
 
+// Image holds the pixel intensities of an image.
+// 255 is foreground (black), 0 is background (white).
 type Image []byte
 
 // ReadImageFile opens the named image file (training or test), parses it and
@@ -66,6 +68,7 @@ func readImageFile(r io.Reader) (rows, cols int, imgs []Image, err error) {
 	return int(nrow), int(ncol), imgs, nil
 }
 
+// Label is a digit label in 0 to 9
 type Label uint8
 
 // ReadLabelFile opens the named label file (training or test), parses it and

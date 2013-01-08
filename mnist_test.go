@@ -26,3 +26,11 @@ func TestReadImageFile(t *testing.T) {
 	}
 	fmt.Printf("%d images, %dx%d format\n", len(imgs), nrow, ncol)
 }
+
+func TestLoad(t *testing.T) {
+	train, test, err := Load("./data")
+	if err != nil {
+		t.Fatalf("load (%s)", err)
+	}
+	println(train.Count(), test.Count())
+}
