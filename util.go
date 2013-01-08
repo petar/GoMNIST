@@ -35,15 +35,15 @@ func (s *Set) Get(i int) (Image, Label) {
 	return s.Images[i], s.Labels[i]
 }
 
-// Sweep is an iterator over the points in a data set
-type Sweep struct {
+// Sweeper is an iterator over the points in a data set
+type Sweeper struct {
 	set *Set
 	i   int
 }
 
-// Next returns the next image and its label in the data set
-// If the end is reached, present is set to false
-func (sw *Sweep) Next() (image Image, label Label, present bool) {
+// Next returns the next image and its label in the data set.
+// If the end is reached, present is set to false.
+func (sw *Sweeper) Next() (image Image, label Label, present bool) {
 	if sw.i >= len(sw.set.Images) {
 		return nil, 0, false
 	}
@@ -51,8 +51,8 @@ func (sw *Sweep) Next() (image Image, label Label, present bool) {
 }
 
 // Sweep creates a new sweep iterator over the data set
-func (s *Set) Sweep() *Sweep {
-	return &Sweep{set: s}
+func (s *Set) Sweep() *Sweeper {
+	return &Sweeper{set: s}
 }
 
 // Load reads both the training and the testing MNIST data sets, given
