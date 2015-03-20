@@ -1,3 +1,17 @@
+// Copyright 2013 Petar Maymounkov
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package GoMNIST
 
 import (
@@ -8,10 +22,9 @@ import (
 type Set struct {
 	NRow   int
 	NCol   int
-	Images []Image
+	Images []RawImage
 	Labels []Label
 }
-
 
 // ReadSet reads a set from the images file iname and the corresponding labels file lname
 func ReadSet(iname, lname string) (set *Set, err error) {
@@ -31,7 +44,7 @@ func (s *Set) Count() int {
 }
 
 // Get returns the i-th image and its corresponding label
-func (s *Set) Get(i int) (Image, Label) {
+func (s *Set) Get(i int) (RawImage, Label) {
 	return s.Images[i], s.Labels[i]
 }
 
@@ -43,7 +56,7 @@ type Sweeper struct {
 
 // Next returns the next image and its label in the data set.
 // If the end is reached, present is set to false.
-func (sw *Sweeper) Next() (image Image, label Label, present bool) {
+func (sw *Sweeper) Next() (image RawImage, label Label, present bool) {
 	if sw.i >= len(sw.set.Images) {
 		return nil, 0, false
 	}
