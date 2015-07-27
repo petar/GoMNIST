@@ -57,10 +57,12 @@ type Sweeper struct {
 // Next returns the next image and its label in the data set.
 // If the end is reached, present is set to false.
 func (sw *Sweeper) Next() (image RawImage, label Label, present bool) {
-	if sw.i >= len(sw.set.Images) {
+	var prevIndex = sw.i
+	sw.i += 1
+	if prevIndex >= len(sw.set.Images) {
 		return nil, 0, false
 	}
-	return sw.set.Images[sw.i], sw.set.Labels[sw.i], true
+	return sw.set.Images[prevIndex], sw.set.Labels[prevIndex], true
 }
 
 // Sweep creates a new sweep iterator over the data set
