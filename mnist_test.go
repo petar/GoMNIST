@@ -47,3 +47,16 @@ func TestLoad(t *testing.T) {
 	}
 	println(train.Count(), test.Count())
 }
+
+func TestSweeperNext(t *testing.T) {
+	train, _, err := Load("./data")
+	if err != nil {
+		t.Fatalf("load (%s)", err)
+	}
+	sweeper := train.Sweep()
+	var currentIndex = sweeper.i
+	sweeper.Next()
+	if currentIndex == sweeper.i {
+		t.Errorf("Next does not increase index")
+	}
+}
