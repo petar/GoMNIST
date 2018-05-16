@@ -49,6 +49,11 @@ func (img RawImage) At(x, y int) color.Color {
 	return color.Gray{img[y*Width+x]}
 }
 
+func (img RawImage) AtGray(x, y int) color.Gray {
+    return color.Gray{img[y*Width+x]}
+}
+
+
 // ReadImageFile opens the named image file (training or test), parses it and
 // returns all images in order.
 func ReadImageFile(name string) (rows, cols int, imgs []RawImage, err error) {

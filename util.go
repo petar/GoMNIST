@@ -57,6 +57,7 @@ type Sweeper struct {
 // Next returns the next image and its label in the data set.
 // If the end is reached, present is set to false.
 func (sw *Sweeper) Next() (image RawImage, label Label, present bool) {
+	sw.i++
 	if sw.i >= len(sw.set.Images) {
 		return nil, 0, false
 	}
@@ -65,7 +66,7 @@ func (sw *Sweeper) Next() (image RawImage, label Label, present bool) {
 
 // Sweep creates a new sweep iterator over the data set
 func (s *Set) Sweep() *Sweeper {
-	return &Sweeper{set: s}
+	return &Sweeper{set: s, i: -1}
 }
 
 // Load reads both the training and the testing MNIST data sets, given
